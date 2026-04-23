@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>منصة عروض المنطقة</title>
+  <meta name="description" content="منصة عروض محلية لإدارة وعرض الخصومات والتنبيهات بسهولة" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-wrap">
+        <div class="brand-badge">🔖</div>
+        <div>
+          <h1>منصة عروض المنطقة</h1>
+          <p>إدارة احترافية لعروض سناب شات والمتاجر المحلية</p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button id="notifyBtn" class="btn btn-primary">تفعيل الإشعارات 🔔</button>
+        <button id="openAdminBtn" class="btn btn-secondary">لوحة التحكم</button>
+      </div>
+    </header>
+
+    <section class="hero card">
+      <div class="hero-content">
+        <span class="pill">منصة سهلة • سريعة • قابلة للتحديث</span>
+        <h2>اعرض أحدث العروض في منطقتك بشكل احترافي</h2>
+        <p>
+          أضف العروض، حدّثها، احذفها، حدّد تاريخ البداية والنهاية، واجعل الزوار يشتركون بالتنبيهات
+          ليصلك جمهور دائم خارج سناب شات أيضًا.
+        </p>
+        <div class="hero-actions">
+          <a href="#offersSection" class="btn btn-primary">تصفح العروض</a>
+          <button id="heroAdminBtn" class="btn btn-light">إدارة العروض</button>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-box">
+          <strong id="activeCount">0</strong>
+          <span>عروض نشطة</span>
+        </div>
+        <div class="stat-box">
+          <strong id="expiringCount">0</strong>
+          <span>تنتهي قريبًا</span>
+        </div>
+        <div class="stat-box">
+          <strong id="subscriberCount">0</strong>
+          <span>مهتمون بالتنبيهات</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="filters card" id="offersSection">
+      <div class="filters-grid">
+        <div class="field">
+          <label for="searchInput">بحث</label>
+          <input id="searchInput" type="text" placeholder="ابحث باسم المتجر أو عنوان العرض" />
+        </div>
+        <div class="field">
+          <label for="categoryFilter">التصنيف</label>
+          <select id="categoryFilter">
+            <option value="all">كل التصنيفات</option>
+            <option value="مطاعم">مطاعم</option>
+            <option value="كافيهات">كافيهات</option>
+            <option value="ملابس">ملابس</option>
+            <option value="عطور">عطور</option>
+            <option value="إلكترونيات">إلكترونيات</option>
+            <option value="خدمات">خدمات</option>
+            <option value="أخرى">أخرى</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="statusFilter">الحالة</label>
+          <select id="statusFilter">
+            <option value="active">العروض النشطة</option>
+            <option value="all">كل العروض</option>
+            <option value="expiring">تنتهي قريبًا</option>
+            <option value="ended">العروض المنتهية</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="offers-grid" id="offersGrid"></section>
+    <section id="emptyState" class="card empty-state hidden">
+      <h3>لا توجد عروض مطابقة</h3>
+      <p>جرّب تغيير الفلاتر أو أضف عرضًا جديدًا من لوحة التحكم.</p>
+    </section>
+  </div>
+
+  <div id="adminModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-overlay" data-close="true"></div>
+    <div class="modal-content admin-panel">
+      <div class="modal-head">
+        <div>
+          <h3>لوحة التحكم</h3>
+          <p>إضافة وتعديل وحذف العروض بسهولة</p>
+        </div>
+        <button class="icon-btn" id="closeAdminBtn">✕</button>
+      </div>
+
+      <div class="admin-grid">
+        <div class="card form-card">
+          <h4 id="formTitle">إضافة عرض جديد</h4>
+          <form id="offerForm">
+            <input type="hidden" id="offerId" />
+            <div class="field"><label for="title">عنوان العرض</label><input id="title" required /></div>
+            <div class="field"><label for="store">اسم المتجر</label><input id="store" required /></div>
+            <div class="field"><label for="category">التصنيف</label>
+              <select id="category" required>
+                <option value="مطاعم">مطاعم</option>
+                <option value="كافيهات">كافيهات</option>
+                <option value="ملابس">ملابس</option>
+                <option value="عطور">عطور</option>
+                <option value="إلكترونيات">إلكترونيات</option>
+                <option value="خدمات">خدمات</option>
+                <option value="أخرى">أخرى</option>
+              </select>
+            </div>
+            <div class="two-cols">
+              <div class="field"><label for="startDate">تاريخ البداية</label><input id="startDate" type="date" required /></div>
+              <div class="field"><label for="endDate">تاريخ النهاية</label><input id="endDate" type="date" required /></div>
+            </div>
+            <div class="two-cols">
+              <div class="field"><label for="discount">نسبة/نوع العرض</label><input id="discount" placeholder="مثال: خصم 30%" required /></div>
+              <div class="field"><label for="location">المنطقة / الحي</label><input id="location" placeholder="مثال: بريدة - الصفراء" required /></div>
+            </div>
+            <div class="field"><label for="image">رابط صورة العرض</label><input id="image" type="url" placeholder="https://..." /></div>
+            <div class="field"><label for="link">رابط التواصل أو المتجر</label><input id="link" type="url" placeholder="https://..." /></div>
+            <div class="field"><label for="description">وصف العرض</label><textarea id="description" rows="4" required></textarea></div>
+            <div class="toggle-row">
+              <label class="checkbox-wrap"><input type="checkbox" id="featured" /> عرض مميز</label>
+              <label class="checkbox-wrap"><input type="checkbox" id="visible" checked /> ظاهر للزوار</label>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">حفظ العرض</button>
+              <button type="button" id="resetFormBtn" class="btn btn-light">تفريغ الحقول</button>
+              <button type="button" id="seedDataBtn" class="btn btn-secondary">إضافة بيانات تجريبية</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card table-card">
+          <div class="table-head">
+            <h4>العروض الحالية</h4>
+            <div class="table-actions">
+              <button id="exportBtn" class="btn btn-light">تصدير JSON</button>
+              <label class="btn btn-light import-label">
+                استيراد JSON
+                <input type="file" id="importInput" accept="application/json" hidden />
+              </label>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>العرض</th>
+                  <th>التصنيف</th>
+                  <th>الفترة</th>
+                  <th>الحالة</th>
+                  <th>إجراءات</th>
+                </tr>
+              </thead>
+              <tbody id="adminTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <template id="offerCardTemplate">
+    <article class="offer-card card">
+      <div class="offer-media"></div>
+      <div class="offer-body">
+        <div class="offer-meta-row">
+          <span class="offer-category"></span>
+          <span class="offer-badge"></span>
+        </div>
+        <h3 class="offer-title"></h3>
+        <p class="offer-store"></p>
+        <p class="offer-description"></p>
+        <div class="offer-details">
+          <span class="offer-discount"></span>
+          <span class="offer-location"></span>
+        </div>
+        <div class="offer-dates"></div>
+        <div class="offer-actions">
+          <a class="btn btn-primary offer-link" target="_blank" rel="noopener noreferrer">زيارة العرض</a>
+          <button class="btn btn-light share-btn">مشاركة</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
